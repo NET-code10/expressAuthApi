@@ -58,11 +58,11 @@ export async function findLoginModel(user) {
   }
 }
 
-export async function findUserById({}) {
+export async function findUserById({ id }) {
   try {
     const userCollection = await databaseConnection();
 
-    const userExist = await userCollection.findOne({ _id: new ObjectId(_id) });
+    const userExist = await userCollection.findOne({ _id: new ObjectId(id) });
 
     console.log(userExist);
     return userExist;
