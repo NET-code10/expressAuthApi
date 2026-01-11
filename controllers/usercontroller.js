@@ -127,23 +127,22 @@ export async function userLogoutController(req, res, next) {
 }
 
 export async function checkOuthController(req, res, next) {
-  let accesstoken = req.cookies?.accesstoken;
-  if (!accesstoken) {
-    return res.status(401).send("token required ");
+  try {
+    let accesstoken = req.cookies?.accesstoken;
+    if (!accesstoken) {
+      return res.status(401).send("token required ");
+    }
+
+    let decodedData = jwt.verify(accesstoken, env.SECRET_KEY);
+
+    let userProfile = await findUserById(decodedData);
+    if (userProfile === null)
+      return res.status(401).send("invalid token please try later");
+    // finally passed attach req to the current user profile
+    req.user = userProfile;
+
+    return next(); // jump to the next middlawere
+  } catch (er) {
+    res.send(er);
   }
-
-  let decodedData = jwt.verify(accesstoken, env.SECRET_KEY);
-
-  let userProfile = await findUserById(decodedData);
-
-  return res.send({
-    message: "success",
-    ...userProfile,
-  });
-
-  //
-  // if (!user) return res.status(401).send("invalid request please try later");
-
-  // req.user = user;
-  // return next();
 }
