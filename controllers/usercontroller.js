@@ -140,9 +140,11 @@ export async function checkOuthController(req, res, next) {
     return userProfile;
   });
 
-  //
-  if (!user) return res.status(401).send("invalid request please try later");
+  return res.send(user);
 
-  req.user = user;
+  //
+  // if (!user) return res.status(401).send("invalid request please try later");
+
+  // req.user = user;
   return next();
 }
