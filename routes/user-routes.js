@@ -12,14 +12,12 @@ import {
 Routes.post("/register", createUserController, (req, res) => {
   return res.status(200).json({
     success: true,
-    ...req.user._id,
   });
 });
 
 Routes.post("/login", userLoginController, (req, res) => {
   return res.status(200).json({
     success: true,
-    ...req.user._id,
   });
 });
 
