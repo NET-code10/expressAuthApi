@@ -1,4 +1,5 @@
 import databaseConnection from "../configs/dbconfigs.js";
+import { ObjectId } from "mongodb";
 export async function createUserModel(user) {
   let userCollection = await databaseConnection();
 
@@ -57,13 +58,24 @@ export async function findLoginModel(user) {
   }
 }
 
+
+
 export async function findUserById(user) {
   try {
-    let userCollection = await databaseConnection();
-    let userExist = await userCollection.findOne({ _id: ObjectId(user?._id) });
+    if (!ObjectId.isValid(user._id)) {
+      return null;
+    }
+
+    const userCollection = await databaseConnection();
+
+    const userExist = await userCollection.findOne({
+      _id: new ObjectId(user._id),
+    });
 
     return userExist;
-  } catch (er) {
-    console.log(process.cwd() + " user insertion " + er.message);
+  } catch (err) {
+    console.error("findUserById error:", err.message);
+    throw err;
   }
 }
+
