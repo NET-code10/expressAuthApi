@@ -69,7 +69,7 @@ export async function findUserById(user) {
     const userCollection = await databaseConnection();
 
     const userExist = await userCollection.findOne({
-      _id: new ObjectId(user._id),
+      _id: ObjectId(user._id),
     });
 
     return userExist;
