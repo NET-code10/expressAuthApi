@@ -132,13 +132,16 @@ export async function checkOuthController(req, res, next) {
     return res.status(401).send("token required ");
   }
 
-  let user = jwt.verify(accesstoken, env.SECRET_KEY, (error, data) => {
+  let user = jwt.verify(accesstoken, env.SECRET_KEY, async (error, data) => {
     if (error) {
-      return;
+      return null;
     }
-
-    return data;
+    let userProfile = await findUserById(data);
+    return userProfile;
   });
+
+  //
+  if (!user) return res.status(401).send("invalid request please try later");
 
   req.user = user;
   return next();
