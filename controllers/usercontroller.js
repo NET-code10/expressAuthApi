@@ -136,7 +136,7 @@ export function checkOuthController(req, res, next) {
       return res.status(403).send(" invalid or expired token");
     }
 
-    req.user = accesstoken;
+    req.user = data;
     return next();
   });
 }
