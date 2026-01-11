@@ -58,15 +58,14 @@ export async function findLoginModel(user) {
   }
 }
 
-
 export async function findUserById({ _id }) {
   try {
     const userCollection = await databaseConnection();
 
     const userExist = await userCollection.findOne({
-      _id: ObjectId(_id),
+      _id: new ObjectId(_id),
     });
-
+    console.log(userExist);
     return userExist;
   } catch (err) {
     console.error("findUserById error:", err.message);

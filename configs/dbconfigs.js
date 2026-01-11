@@ -21,5 +21,3 @@ async function databaseConnection() {
 }
 
 export default databaseConnection;
-
-//  console.log(dbUrl);
