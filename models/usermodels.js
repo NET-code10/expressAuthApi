@@ -21,7 +21,7 @@ export async function findSignupModel(user) {
   try {
     let userCollection = await databaseConnection();
     let userExist = await userCollection.findOne({
-      $or: [{ username: user.username }, { email: user.email }],
+      email: user.email,
     });
 
     return userExist;
