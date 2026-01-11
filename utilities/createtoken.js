@@ -5,7 +5,7 @@ export async function createAccessToken(user) {
   let secretkey = env.SECRET_KEY;
   let expireTime = "1h";
   let payload = {
-    id: user._id,
+    id: user.id,
     username: user.username,
   };
 
@@ -19,7 +19,7 @@ export async function createRefreshToken(user) {
   let secretkey = env.SECRET_KEY;
   let expireTime = "7d";
   let payload = {
-    id: user._id,
+    id: user.id,
     username: user.username,
   };
 
