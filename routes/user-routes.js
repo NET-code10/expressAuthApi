@@ -8,18 +8,35 @@ import {
   userLoginController,
   checkOuthController,
 } from "../controllers/usercontroller.js";
+import {
+  loginValidation,
+  registerValidation,
+  validate,
+} from "../utilities/validation.js";
 
-Routes.post("/register", createUserController, (req, res) => {
-  return res.status(200).json({
-    success: true,
-  });
-});
+Routes.post(
+  "/register",
+  registerValidation,
+  validate,
+  createUserController,
+  (req, res) => {
+    return res.status(200).json({
+      success: true,
+    });
+  }
+);
 
-Routes.post("/login", userLoginController, (req, res) => {
-  return res.status(200).json({
-    success: true,
-  });
-});
+Routes.post(
+  "/login",
+  loginValidation,
+  validate,
+  userLoginController,
+  (req, res) => {
+    return res.status(200).json({
+      success: true,
+    });
+  }
+);
 
 Routes.get("/logout", userLogoutController);
 
