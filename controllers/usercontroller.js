@@ -140,7 +140,10 @@ export async function checkOuthController(req, res, next) {
     return userProfile;
   });
 
-  return res.send(user);
+  return res.send({
+    message: "success",
+    data: user,
+  });
 
   //
   // if (!user) return res.status(401).send("invalid request please try later");
