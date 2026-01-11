@@ -1,5 +1,5 @@
 import databaseConnection from "../configs/dbconfigs.js";
-import { ObjectId } from "mongodb";
+// import { ObjectId } from "mongodb";
 export async function createUserModel(user) {
   let userCollection = await databaseConnection();
 
@@ -59,17 +59,12 @@ export async function findLoginModel(user) {
 }
 
 
-
-export async function findUserById(user) {
+export async function findUserById({ _id }) {
   try {
-    if (!ObjectId.isValid(user._id)) {
-      return null;
-    }
-
     const userCollection = await databaseConnection();
 
     const userExist = await userCollection.findOne({
-      _id: ObjectId(user._id),
+      _id: ObjectId(_id),
     });
 
     return userExist;
@@ -78,4 +73,3 @@ export async function findUserById(user) {
     throw err;
   }
 }
-
