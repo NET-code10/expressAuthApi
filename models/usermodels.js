@@ -64,7 +64,6 @@ export async function findUserById({ id }) {
 
     const userExist = await userCollection.findOne({ _id: new ObjectId(id) });
 
-    console.log(userExist);
     return userExist;
   } catch (err) {
     console.error("findUserById error:", err.message);
