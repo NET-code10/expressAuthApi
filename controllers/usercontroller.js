@@ -18,6 +18,19 @@ import {
   createAccessToken,
 } from "../utilities/createtoken.js";
 
+let accessTokenCookeiOptions = {
+  httpOnly: true,
+  secure: true,
+  maxAge: 60 * 60 * 1000, // 1 hour
+  sameSite: "none",
+};
+let refreshTokenOptions = {
+  httpOnly: true,
+  secure: true,
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7d,
+  sameSite: "none",
+};
+
 export async function createUserController(req, res, next) {
   let { username, email, password } = req.body;
   if (!username || !email || !password) {
@@ -39,18 +52,9 @@ export async function createUserController(req, res, next) {
     let accessToken = await createAccessToken(currentUser);
     let RefreshToken = await createRefreshToken(currentUser);
 
-    res.cookie("accesstoken", accessToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 60 * 60 * 1000, // 1 hour
-      sameSite: "none",
-    });
-    res.cookie("refreshtoken", RefreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7d,
-      sameSite: "none",
-    });
+    res.cookie("accesstoken", accessToken, accessTokenCookeiOptions);
+    res.cookie("refreshtoken", RefreshToken, refreshTokenOptions);
+
     // finally jump to the next midddleware to send success message
 
     req.user = currentUser;
@@ -86,19 +90,9 @@ export async function userLoginController(req, res, next) {
     let accessToken = await createAccessToken(payload);
     let RefreshToken = await createRefreshToken(payload);
 
-    res.cookie("accesstoken", accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
+    res.cookie("accesstoken", accessToken, accessTokenCookeiOptions);
 
-      maxAge: 60 * 60 * 1000, // 1 hour
-    });
-    res.cookie("refreshtoken", RefreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
-      sameSite: "none",
-    });
+    res.cookie("refreshtoken", RefreshToken, refreshTokenOptions);
 
     req.user = userExist;
     return next();
@@ -115,19 +109,8 @@ export async function userLogoutController(req, res, next) {
   if (!accessToken || !refreshToken)
     return res.status(400).send("logout failed");
 
-  res.clearCookie("accesstoken", {
-    httpOnly: true,
-    secure: true,
-    maxAge: 60 * 60 * 1000, // 1 hour
-    sameSite: "none",
-  });
-  res.clearCookie("refreshtoken", {
-    httpOnly: true,
-    secure: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
-    sameSite: "none",
-  });
-
+  res.clearCookie("accesstoken", accessTokenCookeiOptions);
+  res.clearCookie("refreshtoken", refreshTokenOptions);
   return next();
 }
 
