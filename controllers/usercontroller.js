@@ -4,6 +4,7 @@ import {
   findLoginModel,
   findSignupModel,
   get_countDocuments,
+  findUserById,
 } from "../models/usermodels.js";
 import {
   comparePasswords,
@@ -125,21 +126,28 @@ export async function userLogoutController(req, res, next) {
   return res.status(200).send("logout succcessfully");
 }
 
-export function checkOuthController(req, res, next) {
+export async function checkOuthController(req, res, next) {
   let accesstoken = req.cookies?.accesstoken;
   if (!accesstoken) {
     return res.status(401).send("token required ");
   }
 
-  jwt.verify(accesstoken, env.SECRET_KEY, (error, data) => {
+  let user = jwt.verify(accesstoken, env.SECRET_KEY, (error, data) => {
     if (error) {
-      return res.status(403).send(" invalid or expired token");
+      return null;
     }
 
-    return res.send({
-      message: "success",
-      ...data,
-    });
-    // return next();
+    // here call database using _id to fetch user data
+    // let user = await findUserById()
+    return data;
   });
+  if (!user) return res.status(403).send(" invalid or expired token");
+
+  let userProfile = await findUserById(user);
+
+  if (!userProfile)
+    return res.status(403).send("invalid token please try later");
+
+  req.user = userProfile;
+  return next();
 }

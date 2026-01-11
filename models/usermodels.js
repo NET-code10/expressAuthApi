@@ -56,3 +56,14 @@ export async function findLoginModel(user) {
     console.log(process.cwd() + " user insertion " + er.message);
   }
 }
+
+export async function findUserById(user) {
+  try {
+    let userCollection = await databaseConnection();
+    let userExist = await userCollection.findOne({ _id: ObjectId(user?._id) });
+
+    return userExist;
+  } catch (er) {
+    console.log(process.cwd() + " user insertion " + er.message);
+  }
+}
