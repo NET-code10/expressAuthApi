@@ -10,10 +10,7 @@ export async function createUserModel(user) {
       ...user,
     });
 
-    return await userCollection.findOne(
-      { email: user.email },
-      { projection: { _id: 0 } }
-    );
+    return await userCollection.findOne({ email: user.email });
   } catch (er) {
     console.log(process.cwd() + " user insertion " + er.message);
     //   to print file that error accured
