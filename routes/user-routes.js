@@ -38,7 +38,9 @@ Routes.post(
   }
 );
 
-Routes.get("/logout", userLogoutController);
+Routes.get("/logout", userLogoutController, (req, res) => {
+  return res.status(200).send("logout succcessfully");
+});
 
 Routes.get("/profile", checkOuthController, (req, res) => {
   return res.status(200).send(req.user);

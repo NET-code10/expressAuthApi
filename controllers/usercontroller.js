@@ -110,6 +110,11 @@ export async function userLoginController(req, res, next) {
 // logout logic
 
 export async function userLogoutController(req, res, next) {
+  let accessToken = req.cookies.accesstoken;
+  let refreshToken = req.cookies.refreshtoken;
+  if (!accessToken || !refreshToken)
+    return res.status(400).send("logout failed");
+
   res.clearCookie("accesstoken", {
     httpOnly: true,
     secure: true,
@@ -123,7 +128,7 @@ export async function userLogoutController(req, res, next) {
     sameSite: "none",
   });
 
-  return res.status(200).send("logout succcessfully");
+  return next();
 }
 
 export async function checkOuthController(req, res, next) {
