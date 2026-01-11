@@ -144,11 +144,15 @@ export async function checkOuthController(req, res, next) {
   if (!user) return res.status(403).send(" invalid or expired token");
 
   let userProfile = await findUserById(user);
-  return res.send(userProfile);
+  return res.send({
+    successMessage: true,
+    date: 2026,
+    userProfile,
+  });
 
   // if (!userProfile)
   //   return res.status(403).send("invalid token please try later");
 
   // req.user = userProfile;
-  return next();
+  // return next();
 }
