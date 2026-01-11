@@ -134,25 +134,12 @@ export async function checkOuthController(req, res, next) {
 
   let user = jwt.verify(accesstoken, env.SECRET_KEY, (error, data) => {
     if (error) {
-      return null;
+      return;
     }
 
-    // here call database using _id to fetch user data
-    // let user = await findUserById()
     return data;
   });
-  if (!user) return res.status(403).send(" invalid or expired token");
 
-  let userProfile = await findUserById(user);
-  return res.send({
-    successMessage: true,
-    date: 2026,
-    userProfile,
-  });
-
-  // if (!userProfile)
-  //   return res.status(403).send("invalid token please try later");
-
-  // req.user = userProfile;
-  // return next();
+  req.user = user;
+  return next();
 }
