@@ -22,7 +22,6 @@ Routes.post(
   (req, res) => {
     return res.status(200).json({
       success: true,
-      ...req.user,
     });
   }
 );
@@ -35,7 +34,6 @@ Routes.post(
   (req, res) => {
     return res.status(200).json({
       success: true,
-      ...req.user,
     });
   }
 );
