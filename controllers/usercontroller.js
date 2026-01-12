@@ -48,9 +48,12 @@ export async function createUserController(req, res, next) {
       email: req.body.email,
       password: hashedPassword,
     });
+    let payload = {
+      id: currentUser._id,
+    };
 
-    let accessToken = await createAccessToken(currentUser);
-    let RefreshToken = await createRefreshToken(currentUser);
+    let accessToken = await createAccessToken(payload);
+    let RefreshToken = await createRefreshToken(payload);
 
     res.cookie("accesstoken", accessToken, accessTokenCookeiOptions);
     res.cookie("refreshtoken", RefreshToken, refreshTokenOptions);
@@ -83,7 +86,6 @@ export async function userLoginController(req, res, next) {
 
     let payload = {
       id: userExist._id,
-      username: userExist.username,
     };
 
     // create access token
