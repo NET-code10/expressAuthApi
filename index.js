@@ -12,7 +12,7 @@ import cors from "cors";
 // Use CORS middleware
 app.use(
   cors({
-    origin: "https://reactblogapp-2r9t.onrender.com/",
+    origin: "https://reactblogapp-2r9t.onrender.com",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     // Allowed HTTP methods
     credentials: true, // Allows cookies and credentials to be sent
